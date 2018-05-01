@@ -6,7 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 public class ScheduleActivity extends Fragment {
+
     public static ScheduleActivity newInstance() {
         ScheduleActivity fragment = new ScheduleActivity();
         return fragment;
@@ -15,6 +18,8 @@ public class ScheduleActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override

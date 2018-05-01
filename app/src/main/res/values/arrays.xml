@@ -8,4 +8,20 @@
         <item>Male</item>
         <item>Female</item>
     </string-array>
+    <string-array name="department">
+        <item>Department 1</item>
+        <item>Department 2</item>
+        <item>Department 3</item>
+        <item>Department 4</item>
+        <item>Department 5</item>
+        <item>Department 6</item>
+        <item>Department 7</item>
+        <item>Department 8</item>
+        <item>Department 9</item>
+        <item>Department 10</item>
+        <item>Department 11</item>
+        <item>Department 12</item>
+        <item>Department 13</item>
+        <item>Department 14</item>
+    </string-array>
 </resources>
