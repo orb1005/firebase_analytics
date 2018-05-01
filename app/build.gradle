@@ -29,6 +29,7 @@ dependencies {
 
     //firebase analytics
     implementation 'com.google.firebase:firebase-core:15.0.0'
+    implementation 'com.android.support:gridlayout-v7:27.1.1'
 }
 
 //firebase analytics
