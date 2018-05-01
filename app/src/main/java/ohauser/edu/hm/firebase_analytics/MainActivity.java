@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_schedule:
                     mTextMessage.setText(R.string.title_schedule);
                     return true;
-                case R.id.navigation_departments:
-                    mTextMessage.setText(R.string.title_departments);
+                case R.id.navigation_search:
+                    mTextMessage.setText(R.string.title_search);
                     return true;
                 case R.id.navigation_profile:
                     mTextMessage.setText(R.string.title_profile);

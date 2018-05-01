@@ -3,13 +3,13 @@
 
     <item
         android:id="@+id/navigation_schedule"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@android:drawable/ic_menu_my_calendar"
         android:title="@string/title_schedule" />
 
     <item
-        android:id="@+id/navigation_departments"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_departments" />
+        android:id="@+id/navigation_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/title_search" />
 
     <item
         android:id="@+id/navigation_profile"
