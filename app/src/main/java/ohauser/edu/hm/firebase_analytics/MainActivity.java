@@ -5,21 +5,24 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
+    private BottomNavigationView navigation;
 
+    /**
+     * The {@code FirebaseAnalytics} used to record screen views.
+     */
+    // [START declare_analytics]
     private FirebaseAnalytics mFirebaseAnalytics;
+    // [END declare_analytics]
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.linear_layout, selectedFragment);
             transaction.commit();
+            recordScreenView();
             return true;
         }
     };
@@ -53,14 +57,40 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // [START shared_app_measurement]
+        // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        // [END shared_app_measurement]
 
         mTextMessage = findViewById(R.id.message);
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.linear_layout, ScheduleActivity.newInstance());
         transaction.commit();
+        recordScreenView();
+    }
+
+    /**
+     * Return the title of the currently displayed screen.
+     *
+     * @return title of view
+     */
+    private String getCurrentScreenTitle() {
+        return (String) mTextMessage.getText();
+    }
+
+    /**
+     * This sample has a single Activity, so we need to manually record "screen views" as
+     * we change fragments.
+     */
+    private void recordScreenView() {
+        // This string must be <= 36 characters long in order for setCurrentScreen to succeed.
+        String screenName = getCurrentScreenTitle();
+
+        // [START set_current_screen]
+        mFirebaseAnalytics.setCurrentScreen(this, screenName, null /* class override */);
+        // [END set_current_screen]
     }
 }
