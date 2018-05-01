@@ -51,14 +51,11 @@
         app:layout_constraintTop_toBottomOf="@+id/message"
         app:layout_constraintVertical_bias="0.357">
 
-        <FrameLayout
-            android:id="@+id/frame_layout"
+        <LinearLayout
+            android:id="@+id/linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/navigation"
-            android:animateLayoutChanges="true">
-
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

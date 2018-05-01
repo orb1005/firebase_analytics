@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_layout, selectedFragment);
+            transaction.replace(R.id.linear_layout, selectedFragment);
             transaction.commit();
             return true;
         }
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, ScheduleActivity.newInstance());
+        transaction.replace(R.id.linear_layout, ScheduleActivity.newInstance());
         transaction.commit();
     }
 
