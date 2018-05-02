@@ -4,4 +4,5 @@
     <string name="title_profile">Profile</string>
     <string name="title_schedule">Schedule</string>
     <string name="seppel_description">image of seppel</string>
+    <string name="semester">Semester: 5th</string>
 </resources>
