@@ -136,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
         // [END set_current_screen]
     }
 
+    /**
+     * Tracks the user properties on app start
+     */
     private void recordUserProperties(){
 
         TextView department = findViewById(R.id.text_department);
@@ -149,6 +152,20 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAnalytics.setUserProperty("university", (String) university.getContentDescription());
     }
 
+    /**
+     * Track events
+     */
+    private void recordEvents(String id, String name, String content_type){
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, content_type);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    }
+
+    /**
+     * Set up a selected item listener for the language spinner
+     */
     private void languageSpinnerListener(final Spinner spinner){
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -159,12 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 if(newLanguageValue != language) {
 
                     language = newLanguageValue;
-
-                    Bundle bundle = new Bundle();
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(spinner.getId()));
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, newLanguageValue);
-                    bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "spinner_language");
-                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                    recordEvents(String.valueOf(spinner.getId()),newLanguageValue,"spinner_language");
                 }
             }
 
@@ -175,6 +187,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Set up a selected item listener for the gender spinner
+     */
     private void genderSpinnerListener(final Spinner spinner){
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -186,11 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
                     gender = newGenderValue;
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(spinner.getId()));
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, newGenderValue);
-                    bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "spinner_gender");
-                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                    recordEvents(String.valueOf(spinner.getId()),newGenderValue,"spinner_gender");
                 }
             }
 
