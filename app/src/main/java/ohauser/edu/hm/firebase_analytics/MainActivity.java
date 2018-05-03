@@ -16,6 +16,13 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class MainActivity extends AppCompatActivity {
 
+    String language;
+    String gender;
+
+    private Fragment profileFragment;
+    private Fragment searchCoursesFragment;
+    private Fragment scheduleFragment;
+
     //firebase analytics fields to track
     private TextView screenTitle;
     private BottomNavigationView navigation;
@@ -27,34 +34,38 @@ public class MainActivity extends AppCompatActivity {
     public FirebaseAnalytics mFirebaseAnalytics;
     // [END declare_analytics]
 
-    Fragment profileFragment;
-    Fragment searchCoursesFragment;
-    Fragment scheduleFragment;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_schedule:
                     screenTitle.setText(R.string.title_schedule);
-                    selectedFragment = scheduleFragment;
+                    transaction.replace(R.id.linear_layout, scheduleFragment);
+                    transaction.commitNow();
                     break;
                 case R.id.navigation_search:
                     screenTitle.setText(R.string.title_search);
-                    selectedFragment = searchCoursesFragment;
+                    transaction.replace(R.id.linear_layout, searchCoursesFragment);
+                    transaction.commitNow();
                     break;
                 case R.id.navigation_profile:
                     screenTitle.setText(R.string.title_profile);
-                    selectedFragment = profileFragment;
+                    transaction.replace(R.id.linear_layout, profileFragment);
+                    transaction.commitNow();
+
+                    final Spinner languageSpinner = findViewById(R.id.spinner_language);
+                    languageSpinnerListener(languageSpinner);
+
+                    final Spinner genderSpinner = findViewById(R.id.spinner_gender);
+                    genderSpinnerListener(genderSpinner);
                     break;
             }
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.linear_layout, selectedFragment);
-            transaction.commit();
-
             //firebase analytics track screen
             recordScreenView();
             return true;
@@ -93,6 +104,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         recordUserProperties();
+
+        final Spinner languageSpinner = findViewById(R.id.spinner_language);
+        language = languageSpinner.getSelectedItem().toString();
+        languageSpinnerListener(languageSpinner);
+
+        final Spinner genderSpinner = findViewById(R.id.spinner_gender);
+        gender = genderSpinner.getSelectedItem().toString();
+        genderSpinnerListener(genderSpinner);
     }
 
     /**
@@ -128,25 +147,51 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAnalytics.setUserProperty("semester", (String) semester.getContentDescription());
         mFirebaseAnalytics.setUserProperty("account_type", (String) accountType.getContentDescription());
         mFirebaseAnalytics.setUserProperty("university", (String) university.getContentDescription());
-
-        final Spinner genderSpinner = findViewById(R.id.spinner_gender);
-        spinnerListener(genderSpinner, "gender");
-
-        final Spinner languageSpinner = findViewById(R.id.spinner_language);
-        spinnerListener(languageSpinner, "language");
     }
 
-    private void spinnerListener(final Spinner spinner, final String name){
+    private void languageSpinnerListener(final Spinner spinner){
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String value = spinner.getSelectedItem().toString();
+                final String newLanguageValue = spinner.getSelectedItem().toString();
 
-                Bundle bundle = new Bundle();
-                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(spinner.getId()));
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, value);
-                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "spinner_" + name);
-                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                if(newLanguageValue != language) {
+
+                    language = newLanguageValue;
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(spinner.getId()));
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, newLanguageValue);
+                    bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "spinner_language");
+                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+            }
+
+        });
+    }
+
+    private void genderSpinnerListener(final Spinner spinner){
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                final String newGenderValue = spinner.getSelectedItem().toString();
+
+                if(newGenderValue != gender) {
+
+                    gender = newGenderValue;
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(spinner.getId()));
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, newGenderValue);
+                    bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "spinner_gender");
+                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                }
             }
 
             @Override
