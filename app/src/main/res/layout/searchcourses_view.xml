@@ -7,7 +7,7 @@
     tools:context="ohauser.edu.hm.firebase_analytics.SearchCoursesActivity">
 
     <SearchView
-        android:id="@+id/search"
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#2aaaaaaa"
@@ -47,7 +47,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:text="Operating Systems 1"
+        android:text="Operating_Systems_1"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
     <Button
@@ -60,7 +60,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:text="Dynamics for Engineers"
+        android:text="Dynamics_for_Engineers"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
     <Button
@@ -73,7 +73,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:text="Plant Engineering"
+        android:text="Plant_Engineering"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
 </LinearLayout>

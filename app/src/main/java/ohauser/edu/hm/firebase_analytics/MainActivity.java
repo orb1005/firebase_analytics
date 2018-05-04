@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -49,11 +51,24 @@ public class MainActivity extends AppCompatActivity {
                     transaction.replace(R.id.linear_layout, scheduleFragment);
                     transaction.commitNow();
                     break;
+
                 case R.id.navigation_search:
                     screenTitle.setText(R.string.title_search);
                     transaction.replace(R.id.linear_layout, searchCoursesFragment);
                     transaction.commitNow();
+
+                    final SearchView searchView  = findViewById(R.id.search_view);
+                    searchListener(searchView);
+
+                    final Button os = findViewById(R.id.operating_systems);
+                    final Button dfe = findViewById(R.id.dynamics_for_engineers);
+                    final Button pe = findViewById(R.id.plant_engineering);
+
+                    buttonListener(os, (String) os.getText());
+                    buttonListener(dfe, (String) dfe.getText());
+                    buttonListener(pe, (String) pe.getText());
                     break;
+
                 case R.id.navigation_profile:
                     screenTitle.setText(R.string.title_profile);
                     transaction.replace(R.id.linear_layout, profileFragment);
@@ -155,13 +170,15 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Track events
      */
-    private void recordEvents(String id, String name, String content_type){
+    private void recordEvent(String id, String name,String param, String param_value){
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, content_type);
+        bundle.putString(param, param_value);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
+
+    //Setup listeners
 
     /**
      * Set up a selected item listener for the language spinner
@@ -176,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 if(newLanguageValue != language) {
 
                     language = newLanguageValue;
-                    recordEvents(String.valueOf(spinner.getId()),newLanguageValue,"spinner_language");
+                    recordEvent(String.valueOf(spinner.getId()),"spinner_language","language",newLanguageValue);
                 }
             }
 
@@ -201,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
                     gender = newGenderValue;
 
-                    recordEvents(String.valueOf(spinner.getId()),newGenderValue,"spinner_gender");
+                    recordEvent(String.valueOf(spinner.getId()),"spinner_gender","gender",newGenderValue);
                 }
             }
 
@@ -209,6 +226,37 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parentView) {
             }
 
+        });
+    }
+
+    /**
+     * Set up a query submit listener for the search bar
+     */
+    private void searchListener(final SearchView searchView){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                recordEvent(String.valueOf(searchView.getId()), "course_search",FirebaseAnalytics.Param.SEARCH_TERM, query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+
+    /**
+     * Set up a query submit listener for the search bar
+     */
+    private void buttonListener(final Button button, final String courseName){
+        button.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                recordEvent(String.valueOf(button.getId()), "course_button","course", courseName);
+            }
         });
     }
 
